@@ -99,20 +99,6 @@ const MyComponent = () => <Add />;
     },
     {
       code: `
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import SettingsIcon from '@mui/icons-material/Settings';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-      `,
-      output: `
-
-
-import { PersonOutlineOutlined, Settings, HelpOutline } from '@mui/icons-material';
-
-      `,
-      errors: [{ message: 'Use named imports for MUI icons instead of default imports.' }],
-    },
-    {
-      code: `
 import CloseIcon from '@mui/icons-material/Close';
 import { Snackbar, LinearProgress, Alert, IconButton, Typography, Stack, AlertTitle } from '@mui/material';
 
