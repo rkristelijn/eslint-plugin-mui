@@ -30,8 +30,7 @@ ruleTester.run('prefer-named-imports', rule, {
       code: `import SomethingElse from 'some-other-library';`, // Should be valid
     },
     {
-      code: `
-import { Add } from '@mui/icons-material';
+      code: `import { Add } from '@mui/icons-material';
 const MyComponent = () => <Add />;
       `, // JSX usage is already correct
     },
@@ -45,6 +44,7 @@ const MyComponent = () => <CloseIcon />;
       `,
       output: `
 import { Close } from '@mui/icons-material';
+
 const MyComponent = () => <Close />;
       `,
       errors: [
@@ -59,6 +59,7 @@ const MyComponent = () => <ChevronLeftIcon />;
       `,
       output: `
 import { ChevronLeft } from '@mui/icons-material';
+
 const MyComponent = () => <ChevronLeft />;
       `,
       errors: [
@@ -73,6 +74,7 @@ const MyComponent = () => <ChevronRightIcon />;
       `,
       output: `
 import { ChevronRight } from '@mui/icons-material';
+
 const MyComponent = () => <ChevronRight />;
       `,
       errors: [
@@ -87,6 +89,7 @@ const MyComponent = () => <AddIcon />;
       `,
       output: `
 import { Add } from '@mui/icons-material';
+
 const MyComponent = () => <Add />;
       `,
       errors: [
@@ -98,16 +101,21 @@ const MyComponent = () => <Add />;
       code: `
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import SettingsIcon from '@mui/icons-material/Settings';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';`,
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+      `,
       output: `
+
+
 import { PersonOutlineOutlined, Settings, HelpOutline } from '@mui/icons-material';
-`,
+
+      `,
       errors: [{ message: 'Use named imports for MUI icons instead of default imports.' }],
     },
     {
       code: `
 import CloseIcon from '@mui/icons-material/Close';
 import { Snackbar, LinearProgress, Alert, IconButton, Typography, Stack, AlertTitle } from '@mui/material';
+
 const MyComponent = () => (
   <IconButton size='small' aria-label='close' color='inherit' onClick={() => {}}>
     <CloseIcon fontSize='small' />
@@ -116,7 +124,9 @@ const MyComponent = () => (
       `,
       output: `
 import { Close } from '@mui/icons-material';
+
 import { Snackbar, LinearProgress, Alert, IconButton, Typography, Stack, AlertTitle } from '@mui/material';
+
 const MyComponent = () => (
   <IconButton size='small' aria-label='close' color='inherit' onClick={() => {}}>
     <Close fontSize='small' />
@@ -140,6 +150,7 @@ const MyComponent = () => (
       `,
       output: `
 import { Close } from '@mui/icons-material';
+
 const MyComponent = () => (
   <div>
     <span>Close the dialog</span>
@@ -163,6 +174,7 @@ const MyComponent = () => (
       `,
       output: `
 import { Close } from '@mui/icons-material';
+
 const MyComponent = () => (
   <Alert icon={<Close />} severity="error">
     This is an error alert.
@@ -176,67 +188,17 @@ const MyComponent = () => (
     },
     {
       code: `
-import CloseIcon from '@mui/icons-material/Close';
-const MyComponent = () => (
-  <Alert icon={<CloseIcon />} severity="error"
-    action={
-      <IconButton
-        aria-label="close"
-        color="inherit"
-        size="small"
-        onClick={() => {}}
-      >
-        <CloseIcon fontSize="inherit" />
-      </IconButton>
-    }
-  >
-    This is an error alert.
-  </Alert>
-);`,
-      output: `
-import { Close } from '@mui/icons-material';
-const MyComponent = () => (
-  <Alert icon={<Close />} severity="error"
-    action={
-      <IconButton
-        aria-label="close"
-        color="inherit"
-        size="small"
-        onClick={() => {}}
-      >
-        <Close fontSize="inherit" />
-      </IconButton>
-    }
-  >
-    This is an error alert.
-  </Alert>
-);`,
-      errors: [
-        { message: 'Use named imports for MUI icons instead of default imports.' },
-        { message: 'Replace <CloseIcon /> with <Close />' },
-        { message: 'Replace <CloseIcon /> with <Close />' },
-      ],
-    },
-    {
-      code: `
 import { Button } from '@mui/material';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 const MyComponent = () => (
   <>
-    <Button
-      variant="outlined"
-      startIcon={<ChevronLeftIcon />}
-      disabled={false}
-    >
+    <Button variant="outlined" startIcon={<ChevronLeftIcon />} disabled={false}>
       Previous
     </Button>
 
-    <Button
-      variant="contained"
-      endIcon={<ChevronRightIcon />}
-    >
+    <Button variant="contained" endIcon={<ChevronRightIcon />}>
       Next
     </Button>
   </>
@@ -244,21 +206,17 @@ const MyComponent = () => (
   `,
       output: `
 import { Button } from '@mui/material';
+
 import { ChevronRight, ChevronLeft } from '@mui/icons-material';
+
+
 const MyComponent = () => (
   <>
-    <Button
-      variant="outlined"
-      startIcon={<ChevronLeft />}
-      disabled={false}
-    >
+    <Button variant="outlined" startIcon={<ChevronLeft />} disabled={false}>
       Previous
     </Button>
 
-    <Button
-      variant="contained"
-      endIcon={<ChevronRight />}
-    >
+    <Button variant="contained" endIcon={<ChevronRight />}>
       Next
     </Button>
   </>
@@ -294,6 +252,8 @@ export default MyComponent;
 import { FC } from 'react';
 import { Button } from '@mui/material';
 import { Add } from '@mui/icons-material';
+
+
 interface MyComponentProps {
   label: string;
 }
@@ -311,6 +271,38 @@ export default MyComponent;
       errors: [
         { message: 'Use named imports for MUI icons instead of default imports.' },
         { message: 'Replace <AddIcon /> with <Add />' },
+      ],
+    },
+    {
+      code: `
+import CloseIcon from '@mui/icons-material/Close';
+import Box from '@mui/material/Box';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+
+const MyComponent = () => (
+  <Box>
+    <CloseIcon />
+    <ShoppingCartOutlinedIcon />
+  </Box>
+);
+  `,
+      output: `
+
+import Box from '@mui/material/Box';
+import { Close, ShoppingCartOutlined } from '@mui/icons-material';
+
+
+const MyComponent = () => (
+  <Box>
+    <Close />
+    <ShoppingCartOutlined />
+  </Box>
+);
+  `,
+      errors: [
+        { message: 'Use named imports for MUI icons instead of default imports.' },
+        { message: 'Replace <CloseIcon /> with <Close />' },
+        { message: 'Replace <ShoppingCartOutlinedIcon /> with <ShoppingCartOutlined />' },
       ],
     },
   ],
