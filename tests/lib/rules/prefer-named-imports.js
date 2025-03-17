@@ -8,11 +8,12 @@ const { RuleTester } = require('eslint');
 const rule = require('../../../lib/rules/prefer-named-imports');
 
 const ruleTester = new RuleTester({
+  parser: require.resolve('@typescript-eslint/parser'),
   parserOptions: {
-    ecmaVersion: 2021,
+    ecmaVersion: 'latest',
     sourceType: 'module',
     ecmaFeatures: {
-      jsx: true, // Enable JSX parsing
+      jsx: true,
     },
   },
 });
@@ -214,6 +215,102 @@ const MyComponent = () => (
         { message: 'Use named imports for MUI icons instead of default imports.' },
         { message: 'Replace <CloseIcon /> with <Close />' },
         { message: 'Replace <CloseIcon /> with <Close />' },
+      ],
+    },
+    {
+      code: `
+import { Button } from '@mui/material';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+
+const MyComponent = () => (
+  <>
+    <Button
+      variant="outlined"
+      startIcon={<ChevronLeftIcon />}
+      disabled={false}
+    >
+      Previous
+    </Button>
+
+    <Button
+      variant="contained"
+      endIcon={<ChevronRightIcon />}
+    >
+      Next
+    </Button>
+  </>
+);
+  `,
+      output: `
+import { Button } from '@mui/material';
+import { ChevronRight, ChevronLeft } from '@mui/icons-material';
+const MyComponent = () => (
+  <>
+    <Button
+      variant="outlined"
+      startIcon={<ChevronLeft />}
+      disabled={false}
+    >
+      Previous
+    </Button>
+
+    <Button
+      variant="contained"
+      endIcon={<ChevronRight />}
+    >
+      Next
+    </Button>
+  </>
+);
+  `,
+      errors: [
+        { message: 'Use named imports for MUI icons instead of default imports.' },
+        { message: 'Replace <ChevronLeftIcon /> with <ChevronLeft />' },
+        { message: 'Replace <ChevronRightIcon /> with <ChevronRight />' },
+      ],
+    },
+    {
+      code: `
+import { FC } from 'react';
+import { Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+
+interface MyComponentProps {
+  label: string;
+}
+
+const MyComponent: FC<MyComponentProps> = ({ label }) => {
+  return (
+    <Button startIcon={<AddIcon />}>
+      {label}
+    </Button>
+  );
+};
+
+export default MyComponent;
+  `,
+      output: `
+import { FC } from 'react';
+import { Button } from '@mui/material';
+import { Add } from '@mui/icons-material';
+interface MyComponentProps {
+  label: string;
+}
+
+const MyComponent: FC<MyComponentProps> = ({ label }) => {
+  return (
+    <Button startIcon={<Add />}>
+      {label}
+    </Button>
+  );
+};
+
+export default MyComponent;
+  `,
+      errors: [
+        { message: 'Use named imports for MUI icons instead of default imports.' },
+        { message: 'Replace <AddIcon /> with <Add />' },
       ],
     },
   ],
