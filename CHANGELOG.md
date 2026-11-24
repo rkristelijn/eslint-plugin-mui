@@ -17,6 +17,20 @@ Targets MUI v7 to v9 and ESLint 9 / 10 (flat config).
   scope analysis instead of a regex over the file.
 - The package name in `package.json` is now `@rkristelijn/eslint-plugin-mui` (as published), and the repository links
   point to this repository.
+- The package has an `exports` field: only the plugin entry point is public. Deep requires such as
+  `@rkristelijn/eslint-plugin-mui/lib/rules/sort-sx-keys` now fail with `ERR_PACKAGE_PATH_NOT_EXPORTED`; use
+  `plugin.rules['sort-sx-keys']`.
+- Rules move JSX props into `sx` / `slots` / `slotProps` with autofix. Run `eslint --fix` on a clean working tree and
+  review the diff.
+
+### Upgrading from 1.x
+
+1. Upgrade to ESLint 9.15+ with a flat config (`eslint.config.js`).
+2. Replace the per-rule setup with `mui.configs.recommended` (or `strict`), or keep your rule list and remove
+   `mui/prefer-named-imports`.
+3. Run `npx eslint --fix .`. The migration guards autofix what is provably equivalent and report the rest with the
+   matching `@mui/codemod` command.
+4. Still on MUI v6? `no-removed-imports` reports `Grid2` (renamed in v7). Disable it until you upgrade MUI.
 
 ### Added
 
