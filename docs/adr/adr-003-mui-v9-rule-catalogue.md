@@ -17,9 +17,12 @@ gets a rule, and every message names the official codemod.
 
 - Migration guards (`recommended` as errors): `no-deep-imports`, `no-moved-imports`, `no-removed-imports`,
   `no-removed-icons`, `no-system-props`, `prefer-slot-props`, `no-removed-props`, `no-legacy-grid`.
-- Hygiene and accessibility (`recommended` as warnings): `prefer-path-imports`, `require-native-button`,
-  `icon-button-aria-label`, `no-grid-alias`, `no-single-child-in-grid`, `no-single-child-in-stack`.
+- Hygiene and accessibility (`recommended` as warnings): `prefer-path-imports`, `icon-button-aria-label`,
+  `no-grid-alias`, `no-single-child-in-grid`, `no-single-child-in-stack`.
 - Opinionated style (`strict` only): `sort-sx-keys`, `no-literal-colors`, `no-literal-spacing`.
+- MUI v9-only advice (`strict` only): `require-native-button`. **`recommended` must be safe on MUI v7:** every fix or
+  replacement it suggests must exist in v7. `nativeButton` only exists from v9, so following the rule on v7 is a
+  TypeScript error.
 - `prefer-named-imports` is deprecated and in no config.
 
 Autofix only when the rewrite is provably equivalent; otherwise report and point at the codemod. A wrong autofix is

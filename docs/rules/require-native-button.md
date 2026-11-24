@@ -6,11 +6,15 @@ Require an explicit `nativeButton` when a button-like MUI component renders a cu
 
 |         |                                               |
 | ------- | --------------------------------------------- |
-| Config  | `recommended` (warn), `strict`                |
+| Config  | `strict` only (MUI v9+; see below)            |
 | Autofix | No (only you know what the component renders) |
-| MUI     | v9                                            |
+| MUI     | v9+ only                                      |
 
 ## Why
+
+> **MUI v9+ only.** `nativeButton` does not exist in v7: following this rule there gives a TypeScript error ("property
+> does not exist"). That is why the rule is not in `recommended`. Enable it once you are on v9:
+> `'mui/require-native-button': 'warn'`.
 
 In v9, ButtonBase needs to know before hydration whether it renders a native `<button>`, so the server output has the
 correct semantics: `type`, `disabled`, and role/tabIndex for non-buttons. MUI warns in development when `nativeButton`

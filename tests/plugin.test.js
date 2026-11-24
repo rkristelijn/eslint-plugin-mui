@@ -85,6 +85,18 @@ export const A = () => <Box sx={{ mt: 2 }}><Grid size={12}><Delete /></Grid></Bo
     );
   });
 
+  it('recommended stays safe on MUI v7: no v9-only advice', () => {
+    // nativeButton only exists from MUI v9; following require-native-button on v7 is a TypeScript error (ADR-003).
+    assert.ok(!('mui/require-native-button' in plugin.configs.recommended.rules));
+    assert.equal(plugin.configs.strict.rules['mui/require-native-button'], 'error');
+    const messages = new Linter().verify(
+      "import Button from '@mui/material/Button';\nimport Link from 'next/link';\n<Button component={Link} href='/' />;",
+      [plugin.configs.recommended],
+      { filename: 'a.js' },
+    );
+    assert.deepEqual(messages, []);
+  });
+
   it('strict also reports the style rules', () => {
     const messages = new Linter().verify("<Box sx={{ color: '#fff', p: '16px' }} />;", [plugin.configs.strict], {
       filename: 'a.js',

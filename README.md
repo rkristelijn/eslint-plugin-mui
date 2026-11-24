@@ -90,7 +90,7 @@ Upgrading from 1.x? See the [changelog](CHANGELOG.md).
 | Rule                                                               | Description                                                  |       |
 | ------------------------------------------------------------------ | ------------------------------------------------------------ | ----- |
 | [prefer-path-imports](docs/rules/prefer-path-imports.md)           | Path imports instead of barrels (up to 6x faster dev builds) | ✅ 🔧 |
-| [require-native-button](docs/rules/require-native-button.md)       | Explicit `nativeButton` with a custom `component` (v9)       | ✅    |
+| [require-native-button](docs/rules/require-native-button.md)       | Explicit `nativeButton` with a custom `component` (MUI v9+)  | 🔒    |
 | [icon-button-aria-label](docs/rules/icon-button-aria-label.md)     | `IconButton` needs an accessible name                        | ✅    |
 | [no-grid-alias](docs/rules/no-grid-alias.md)                       | No `Grid2 as Grid` / `GridLegacy as Grid`                    | ✅ 🔧 |
 | [no-single-child-in-grid](docs/rules/no-single-child-in-grid.md)   | No Grid container with one child                             | ✅    |

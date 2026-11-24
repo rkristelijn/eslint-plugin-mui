@@ -54,7 +54,8 @@ Targets MUI v7 to v9 and ESLint 9 / 10 (flat config).
 - Configs `recommended` and `strict`; plugin `meta`.
 - Migration guards: `no-deep-imports`, `no-moved-imports`, `no-removed-imports`, `no-removed-icons`, `no-system-props`,
   `prefer-slot-props`, `no-removed-props`, `no-legacy-grid`.
-- Hygiene and a11y: `prefer-path-imports`, `require-native-button`, `icon-button-aria-label`.
+- Hygiene and a11y: `prefer-path-imports`, `icon-button-aria-label`, and `require-native-button` (MUI v9+ only, so
+  `strict` only: `nativeButton` does not exist in v7).
 - `sx` style: `no-literal-spacing`.
 - All rules resolve MUI components from barrel imports, path imports and aliases, for `@mui/material`, `@mui/system`,
   `@mui/lab` and `@mui/joy` (ADR-003).
