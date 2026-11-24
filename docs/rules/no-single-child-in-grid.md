@@ -1,40 +1,43 @@
 # no-single-child-in-grid
 
-Why this rule?
+<!-- @id mui-no-single-child-in-grid -->
 
-Using Grid2 for a single child element is unnecessary and can lead to:
+Disallow a Grid **container** with a single child.
 
-- Unintended layout issues: Grid2 is designed for flex/grid-based layouts, which may introduce unwanted spacing,
-  alignment, or wrapping behavior when used with a single child.
-- Reduced clarity: It makes the code harder to understand since Grid2 implies a layout structure, but only one element
-  is inside.
-- Performance overhead: MUI’s Grid2 applies CSS grid styles that aren’t needed for a single child, adding unnecessary
-  computation.
+|         |                                |
+| ------- | ------------------------------ |
+| Config  | `recommended` (warn), `strict` |
+| Autofix | No                             |
+| MUI     | all versions                   |
 
-wrong:
+## Why
 
-```jsx
-import { Grid2 } from '@mui/material';
+A container with one item adds grid layout for nothing. A Grid **item** (`size`) with one child is the normal case and
+is not reported. That changed in 2.0: the old rule flagged items too, and its autofix to `Box` broke layouts.
 
-export const Component = () => {
-  return (
-    <Grid2>
-      <Typography>foo</Typography>
-    </Grid2>
-  );
-};
-```
-
-right:
+## Incorrect
 
 ```jsx
-import { Box } from '@mui/material';
-
-export const Component = () => {
-  return (
-    <Box>
-      <Typography>foo</Typography>
-    </Box>
-  );
-};
+<Grid container spacing={2}>
+  <Grid size={12}>
+    <Card />
+  </Grid>
+</Grid>
 ```
+
+## Correct
+
+```jsx
+<Grid container spacing={2}>
+  <Grid size={6}>
+    <Card />
+  </Grid>
+  <Grid size={6}>
+    <Card />
+  </Grid>
+</Grid>
+```
+
+## Limits
+
+A single child that is an expression (`{items.map(...)}`, `{children}`) can render many elements and is never reported.
