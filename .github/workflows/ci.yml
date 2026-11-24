@@ -28,7 +28,9 @@ jobs:
       - run: npm run check
 
   keur:
-    runs-on: ubuntu-latest
+    # libre2-10 (RE2 .so.10, which keur v0.2.0 links against) ships in Ubuntu 24.04;
+    # ubuntu-latest is 26.04. Back to ubuntu-latest once keur ships static RE2.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       # keur check gates the staged set; stage the whole tree as new so the
