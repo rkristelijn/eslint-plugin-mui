@@ -27,6 +27,18 @@ createRuleTester().run('no-removed-props', rule, {
   ],
   invalid: [
     {
+      name: 'renderValue already present: report renderTags, no rename',
+      code: `${IMPORT}<Autocomplete multiple renderTags={oldRenderer} renderValue={newRenderer} />;`,
+      output: null,
+      errors: [err('Autocomplete', 'renderTags')],
+    },
+    {
+      name: 'a spread may carry sx: Divider light reported, not fixed',
+      code: `${IMPORT}<Divider {...rest} light />;`,
+      output: null,
+      errors: [err('Divider', 'light')],
+    },
+    {
       code: `${IMPORT}<Dialog open disableEscapeKeyDown onClose={close} />;`,
       output: null,
       errors: [err('Dialog', 'disableEscapeKeyDown')],

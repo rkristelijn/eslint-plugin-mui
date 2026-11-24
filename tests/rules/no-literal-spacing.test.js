@@ -51,7 +51,19 @@ createRuleTester().run('no-literal-spacing', rule, {
     {
       name: 'nested selectors and sx arrays',
       code: "<Box sx={[{ '&:hover': { px: '24px' } }, cond && { gap: '8px' }]} />;",
-      errors: [err('24px', [units('3', "<Box sx={[{ '&:hover': { px: 3 } }, cond && { gap: '8px' }]} />;")])],
+      errors: [
+        err('24px', [units('3', "<Box sx={[{ '&:hover': { px: 3 } }, cond && { gap: '8px' }]} />;")]),
+        // conditional sx entries are walked too (CodeRabbit review on PR #6)
+        err('8px', [units('1', "<Box sx={[{ '&:hover': { px: '24px' } }, cond && { gap: 1 }]} />;")]),
+      ],
+    },
+    {
+      name: 'ternary sx entry and ternary value',
+      code: "<Box sx={[dense ? { p: '8px' } : {}, { m: big ? '16px' : 1 }]} />;",
+      errors: [
+        err('8px', [units('1', "<Box sx={[dense ? { p: 1 } : {}, { m: big ? '16px' : 1 }]} />;")]),
+        err('16px', [units('2', "<Box sx={[dense ? { p: '8px' } : {}, { m: big ? 2 : 1 }]} />;")]),
+      ],
     },
     {
       name: 'custom spacing base',

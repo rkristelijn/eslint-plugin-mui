@@ -26,6 +26,12 @@ createRuleTester().run('prefer-path-imports', rule, {
   ],
   invalid: [
     {
+      name: 'string-literal import names use their value',
+      code: "import { 'Delete' as DeleteIcon } from '@mui/icons-material';",
+      output: "import DeleteIcon from '@mui/icons-material/Delete';",
+      errors: [{ messageId: 'barrelIcons', data: { example: 'Delete' } }],
+    },
+    {
       name: 'icons barrel → per-icon default imports (aliases kept)',
       code: "import { Delete, Close as CloseIcon } from '@mui/icons-material';",
       output: "import Delete from '@mui/icons-material/Delete';\nimport CloseIcon from '@mui/icons-material/Close';",

@@ -27,6 +27,18 @@ createRuleTester().run('prefer-slot-props', rule, {
   ],
   invalid: [
     {
+      name: 'spread in slotProps may hold the same key (and wins): no fix',
+      code: `${IMPORT}<Dialog PaperProps={{ elevation: 1 }} slotProps={{ ...custom }} />;`,
+      output: null,
+      errors: [err('PaperProps', 'Dialog')],
+    },
+    {
+      name: 'ListboxComponent → slotProps.listbox.component (keeps the styled listbox), manual',
+      code: "import { Autocomplete } from '@mui/material';\n<Autocomplete ListboxComponent={CustomListbox} />;",
+      output: null,
+      errors: [err('ListboxComponent', 'Autocomplete')],
+    },
+    {
       name: 'single slot prop, no slotProps yet',
       code: `${IMPORT}<Dialog open PaperProps={{ elevation: 3 }} />;`,
       output: `${IMPORT}<Dialog open slotProps={{ paper: { elevation: 3 } }} />;`,

@@ -14,8 +14,9 @@ Require an accessible name on MUI `IconButton`.
 
 An icon has no text, so without a name a screen reader announces just "button" (WCAG 2.2 SC 4.1.2 Name, Role, Value).
 `aria-label` and `aria-labelledby` count. So does a parent MUI `<Tooltip title>`, because Tooltip sets the label on its
-child, and so does visible text inside the button. `title` alone is not accepted: it is a weak fallback in the
-accessible-name algorithm and is not exposed on touch devices.
+child, and so does visible text inside the button (`Close` or `{'Close'}`). A `<Tooltip describeChild>` does **not**
+count: its title becomes a description (`aria-describedby`), so the button still needs its own `aria-label`. `title`
+alone is not accepted: it is a weak fallback in the accessible-name algorithm and is not exposed on touch devices.
 
 ## Incorrect
 

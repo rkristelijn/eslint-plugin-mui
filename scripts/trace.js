@@ -58,7 +58,31 @@ function listFiles(root, roots) {
  * @returns {string}
  */
 function stripCode(text) {
-  return text.replace(/^```[\s\S]*?^```/gm, '').replace(/`[^`\n]*`/g, '');
+  return stripFences(text).replace(/`[^`\n]*`/g, '');
+}
+
+/**
+ * Drop fenced code blocks with CommonMark fence rules: a fence is 3+ backticks
+ * or tildes (up to 3 spaces indent); it closes only on a line of the same
+ * character, at least as long, with nothing else after it. An unclosed fence
+ * runs to the end of the document.
+ * @param {string} text
+ * @returns {string}
+ */
+function stripFences(text) {
+  const kept = [];
+  let fence = null;
+  for (const line of text.split('\n')) {
+    if (fence === null) {
+      const open = /^ {0,3}(`{3,}|~{3,})/.exec(line);
+      if (open && !(open[1][0] === '`' && line.slice(open[0].length).includes('`'))) fence = open[1];
+      else kept.push(line);
+      continue;
+    }
+    const close = /^ {0,3}(`{3,}|~{3,})\s*$/.exec(line);
+    if (close && close[1][0] === fence[0] && close[1].length >= fence.length) fence = null;
+  }
+  return kept.join('\n');
 }
 
 /**
@@ -154,4 +178,4 @@ if (require.main === module) {
   if (args.has('--strict') && report.errors.length > 0) process.exitCode = 1;
 }
 
-module.exports = { analyse, format, harvest };
+module.exports = { analyse, format, harvest, stripFences };

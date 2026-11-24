@@ -14,14 +14,14 @@ Disallow importing MUI exports and modules that were removed in v7 or v9.
 
 These imports fail at build time on current MUI:
 
-| Import                                       | Removed | Replacement                                             |
-| -------------------------------------------- | ------- | ------------------------------------------------------- |
-| `Grid2`, `Unstable_Grid2`                    | v7      | `Grid` (same component)                                 |
-| `GridLegacy`                                 | v9      | `Grid`, via `npx @mui/codemod@latest v7.0.0/grid-props` |
-| `Hidden`, `PigmentHidden`                    | v7      | `sx={{ display: { ... } }}` or `useMediaQuery`          |
-| `experimentalStyled`                         | v7      | `styled`                                                |
-| `StepButtonIcon` (type)                      | v7      | `StepButtonProps['icon']`                               |
-| `@mui/material/modern`, `@mui/material/node` | v7      | `@mui/material`                                         |
+| Import                                       | Removed | Replacement                                                                                                                              |
+| -------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `Grid2`, `Unstable_Grid2`                    | v7      | `Grid` (same component)                                                                                                                  |
+| `GridLegacy`                                 | v9      | `Grid`: change the import to `Grid` first, then run `npx @mui/codemod@latest v7.0.0/grid-props` (it does not rewrite GridLegacy imports) |
+| `Hidden`, `PigmentHidden`                    | v7      | `sx={{ display: { ... } }}` or `useMediaQuery`                                                                                           |
+| `experimentalStyled`                         | v7      | `styled`                                                                                                                                 |
+| `StepButtonIcon` (type)                      | v7      | `StepButtonProps['icon']`                                                                                                                |
+| `@mui/material/modern`, `@mui/material/node` | v7      | `@mui/material`                                                                                                                          |
 
 Each row was checked against the published package layouts of `@mui/material` 6.5.0, 7.3.11 and 9.6.0.
 

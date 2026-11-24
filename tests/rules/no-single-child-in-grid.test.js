@@ -12,6 +12,9 @@ const BARREL = "import { Grid, Box, Typography } from '@mui/material';\n";
 
 createRuleTester().run('no-single-child-in-grid', rule, {
   valid: [
+    // container={false} / dynamic is not provably a container
+    `${BARREL}const A = () => <Grid container={false} size={6}><Box /></Grid>;`,
+    `${BARREL}const A = () => <Grid container={isWide}><Box /></Grid>;`,
     // a Grid *item* with one child is the normal case
     `${BARREL}const A = () => <Grid size={6}><Typography>foo</Typography></Grid>;`,
     `${BARREL}const A = () => <Grid container><Grid size={6} /><Grid size={6} /></Grid>;`,
@@ -27,6 +30,11 @@ createRuleTester().run('no-single-child-in-grid', rule, {
     `${BARREL}const A = () => <Grid container>{/* todo */}</Grid>;`,
   ],
   invalid: [
+    {
+      name: 'container={true} is a container',
+      code: `${BARREL}const A = () => <Grid container={true}><Box /></Grid>;`,
+      errors: [{ messageId: 'singleChild' }],
+    },
     {
       code: `${BARREL}const A = () => (
   <Grid container spacing={2}>

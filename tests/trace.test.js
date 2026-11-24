@@ -12,7 +12,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { execFileSync } = require('node:child_process');
-const { analyse, harvest } = require('../scripts/trace');
+const { analyse, harvest, stripFences } = require('../scripts/trace');
 
 /**
  * Write a file tree under `root`.
@@ -63,6 +63,38 @@ describe('trace analyser', () => {
   it('exempts Coverage: none from the code requirement', () => {
     const { errors } = analyse(harvest(root));
     assert.ok(!errors.some((e) => e.includes('ADR-001')));
+  });
+});
+
+describe('fenced code blocks (CommonMark)', () => {
+  const id = (name) => `${tag('id')} ${name}`;
+  it('drops backtick, tilde and longer fences, keeps text after them', () => {
+    const md = [
+      'before',
+      '```js',
+      id('a'),
+      '```',
+      '~~~md',
+      id('b'),
+      '~~~',
+      '````md',
+      '```',
+      id('c'),
+      '```',
+      '````',
+      '~~~',
+      id('d'),
+      '```',
+      '~~~~',
+      'after',
+    ].join('\n');
+    assert.equal(stripFences(md), 'before\nafter');
+  });
+  it('does not close a fence on a line with trailing text or a shorter fence', () => {
+    assert.equal(stripFences(['````', '``` not a close', '```', id('x')].join('\n')), '');
+  });
+  it('runs an unclosed fence to the end', () => {
+    assert.equal(stripFences(['keep', '~~~', id('y')].join('\n')), 'keep');
   });
 });
 

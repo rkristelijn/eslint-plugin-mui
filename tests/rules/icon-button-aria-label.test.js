@@ -13,6 +13,11 @@ const IMPORT =
 
 createRuleTester().run('icon-button-aria-label', rule, {
   valid: [
+    // static text in an expression names the button
+    `${IMPORT}<IconButton>{'Delete'}</IconButton>;`,
+    `${IMPORT}<IconButton>{\`Delete\`}</IconButton>;`,
+    // describeChild={false} is a labelling tooltip again
+    `${IMPORT}<Tooltip describeChild={false} title="Delete"><IconButton><Delete /></IconButton></Tooltip>;`,
     `${IMPORT}<IconButton aria-label="delete"><Delete /></IconButton>;`,
     `${IMPORT}<IconButton aria-labelledby="lbl"><Delete /></IconButton>;`,
     `${IMPORT}<Tooltip title="Delete"><IconButton><Delete /></IconButton></Tooltip>;`,
@@ -23,6 +28,16 @@ createRuleTester().run('icon-button-aria-label', rule, {
     '<IconButton><Delete /></IconButton>;',
   ],
   invalid: [
+    {
+      name: 'a describeChild Tooltip describes, it does not label',
+      code: `${IMPORT}<Tooltip describeChild title="Delete"><IconButton><Delete /></IconButton></Tooltip>;`,
+      errors: [{ messageId: 'missingLabel', data: { name: 'IconButton' } }],
+    },
+    {
+      name: 'empty or dynamic expression is not visible text',
+      code: `${IMPORT}<IconButton>{' '}<Delete /></IconButton>;\n<IconButton>{label}</IconButton>;`,
+      errors: 2,
+    },
     {
       code: `${IMPORT}<IconButton onClick={remove}><Delete /></IconButton>;`,
       errors: [{ messageId: 'missingLabel', data: { name: 'IconButton' } }],

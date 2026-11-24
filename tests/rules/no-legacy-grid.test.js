@@ -22,6 +22,12 @@ createRuleTester().run('no-legacy-grid', rule, {
   ],
   invalid: [
     {
+      name: 'breakpoints keep source (evaluation) order inside size',
+      code: `${IMPORT}<Grid md={next()} xs={next()} />;`,
+      output: `${IMPORT}<Grid size={{ md: next(), xs: next() }} />;`,
+      errors: 2,
+    },
+    {
       name: 'item + xs only → size={n}',
       code: `${IMPORT}<Grid item xs={12} />;`,
       output: `${IMPORT}<Grid size={12} />;`,

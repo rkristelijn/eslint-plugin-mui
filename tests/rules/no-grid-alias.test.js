@@ -22,6 +22,18 @@ createRuleTester().run('no-grid-alias', rule, {
   ],
   invalid: [
     {
+      name: 'two aliases of the same export: only one fix per pass (no duplicate binding)',
+      code: "import { Grid as A, Grid as B } from '@mui/material';",
+      output: "import { Grid, Grid as B } from '@mui/material';",
+      errors: [{ messageId: 'noAlias' }, { messageId: 'noAlias' }],
+    },
+    {
+      name: 're-exported under the alias: no fix (would rename the public export)',
+      code: "import { Grid as Layout } from '@mui/material';\nexport { Layout };",
+      output: null,
+      errors: [{ messageId: 'noAlias' }],
+    },
+    {
       name: 'Grid2 as Grid: rename binding and every JSX usage',
       code: `import { Avatar, Grid2 as Grid } from '@mui/material';
 const A = () => <Grid container><Grid size={6}><Avatar /></Grid></Grid>;`,

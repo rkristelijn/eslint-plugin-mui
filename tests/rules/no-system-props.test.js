@@ -13,6 +13,8 @@ const err = (prop, component) => ({ messageId: 'systemProp', data: { prop, compo
 
 createRuleTester().run('no-system-props', rule, {
   valid: [
+    // a parameter that shadows the imported Box is not MUI (scope-aware resolution)
+    `${IMPORT}function Local(Box) { return <Box mt={2} />; }`,
     `${IMPORT}<Box sx={{ mt: 2 }} />;`,
     // own props that share a system-prop name
     `${IMPORT}<Typography color="text.secondary" variant="body2" />;`,
@@ -28,6 +30,36 @@ createRuleTester().run('no-system-props', rule, {
     { code: `${IMPORT}<Box component="img" width={100} />;`, options: [{ ignore: ['width'] }] },
   ],
   invalid: [
+    {
+      name: 'a spread may carry sx: report, no fix (an explicit sx would drop it)',
+      code: `${IMPORT}<Box {...extra} mt={2} />;`,
+      output: null,
+      errors: [err('mt', 'Box')],
+    },
+    {
+      name: 'computed literal key in sx collides: no fix',
+      code: `${IMPORT}<Box sx={{ ['mt']: 1 }} mt={2} />;`,
+      output: null,
+      errors: [err('mt', 'Box')],
+    },
+    {
+      name: 'unresolvable computed key in sx: no fix',
+      code: `${IMPORT}<Box sx={{ [key]: 1 }} mt={2} />;`,
+      output: null,
+      errors: [err('mt', 'Box')],
+    },
+    {
+      name: 'sequence expression keeps its parentheses',
+      code: `${IMPORT}<Box mt={(a, b)} />;`,
+      output: `${IMPORT}<Box sx={{ mt: (a, b) }} />;`,
+      errors: [err('mt', 'Box')],
+    },
+    {
+      name: 'an explicit sx next to a spread still merges (the explicit sx already wins)',
+      code: `${IMPORT}<Box {...extra} sx={{ p: 1 }} mt={2} />;`,
+      output: `${IMPORT}<Box {...extra} sx={{ p: 1, mt: 2 }} />;`,
+      errors: [err('mt', 'Box')],
+    },
     {
       name: 'no sx yet: props become a new sx',
       code: `${IMPORT}<Box mt={2} color="primary.main" />;`,

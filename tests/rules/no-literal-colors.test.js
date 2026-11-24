@@ -13,6 +13,7 @@ const ruleTester = createRuleTester();
 
 ruleTester.run('no-literal-colors', rule, {
   valid: [
+    "<Box sx={{ backgroundColor: { xs: 'primary.main', md: 'grey.100' }, color: ['text.primary', 'inherit'] }} />;",
     // 2.0: theme tokens in the newly covered keys stay valid
     "<Box sx={{ bgcolor: 'primary.main', borderColor: 'divider', fill: 'currentColor' }} />;",
     "<Box sx={{ color: '#12345' }} />;",
@@ -138,6 +139,15 @@ ruleTester.run('no-literal-colors', rule, {
       ],
     },
     // 2.0: more color keys and formats
+    {
+      name: 'responsive object, array and conditional color values',
+      code: "<Box sx={{ backgroundColor: { xs: '#fff', md: 'primary.main' }, color: ['red', 'inherit'], borderColor: on ? 'blue' : 'divider' }} />;",
+      errors: [
+        { messageId: 'noLiteralColors', data: { value: '#fff' } },
+        { messageId: 'noLiteralColors', data: { value: 'red' } },
+        { messageId: 'noLiteralColors', data: { value: 'blue' } },
+      ],
+    },
     ...[
       ["bgcolor: '#fff'", '#fff'],
       ["backgroundColor: '#ffffff80'", '#ffffff80'],
