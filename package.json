@@ -1,36 +1,61 @@
 {
-  "name": "eslint-plugin-mui",
-  "version": "1.2.1",
-  "description": "Extended custom ESLint rules for MUI",
+  "name": "@rkristelijn/eslint-plugin-mui",
+  "version": "2.0.0",
+  "description": "ESLint rules for MUI (Material UI v7-v9): migration guards for removed APIs, import hygiene, accessibility and sx best practices",
   "keywords": [
     "eslint",
+    "eslintplugin",
     "eslint-plugin",
     "mui",
-    "material-ui"
+    "material-ui",
+    "mui-v9"
   ],
-  "homepage": "https://github.com/rafaelgomesxyz/eslint-plugin-mui",
-  "bugs": "https://github.com/rafaelgomesxyz/eslint-plugin-mui/issues",
+  "homepage": "https://github.com/rkristelijn/eslint-plugin-mui#readme",
+  "bugs": "https://github.com/rkristelijn/eslint-plugin-mui/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rkristelijn/eslint-plugin-mui.git"
+  },
   "author": "rkristelijn",
+  "license": "MIT",
   "main": "lib/index.js",
-  "repository": "github:rafaelgomesxyz/eslint-plugin-mui",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "docs/rules",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
   "scripts": {
     "lint": "eslint .",
-    "test": "mocha tests --recursive"
-  },
-  "dependencies": {
-    "requireindex": "^1.1.0"
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "node --test",
+    "trace": "node scripts/trace.js",
+    "trace:strict": "node scripts/trace.js --strict",
+    "check": "npm run format:check && npm run lint && npm test && npm run trace:strict"
   },
   "devDependencies": {
-    "eslint": "^7.1.0",
-    "eslint-plugin-eslint-plugin": "^3.2.0",
-    "eslint-plugin-node": "^11.0.0",
-    "mocha": "^9.0.0"
+    "@eslint/js": "10.0.1",
+    "@typescript-eslint/parser": "8.74.0",
+    "eslint": "10.15.0",
+    "eslint-plugin-eslint-plugin": "7.6.2",
+    "globals": "17.14.0",
+    "prettier": "3.10.1",
+    "typescript": "6.0.3"
   },
   "peerDependencies": {
-    "eslint": ">=6"
+    "eslint": ">=9.15.0"
   },
   "engines": {
-    "node": "12.x || 14.x || >= 16"
+    "node": "^20.19.0 || ^22.13.0 || >=24"
   },
-  "license": "MIT"
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
 }

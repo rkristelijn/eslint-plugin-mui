@@ -1,0 +1,12 @@
+# keur.toml: repo-local policy for eslint-plugin-mui (ADR-005).
+# Rule suppressions, each with its cause, live in .keurignore.
+[project]
+type = "lib"
+
+# Level 4 ("quantitatively managed"): the plugin is published to npm and runs in
+# other people's CI, so it is held above the default band.
+[policy]
+level = 4
+
+[rules]
+disabled = []

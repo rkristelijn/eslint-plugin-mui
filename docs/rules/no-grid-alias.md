@@ -1,35 +1,35 @@
-# Disallow renaming of Grid2 in imports (no-grid-alias)
+# no-grid-alias
 
-This rule disallows the renaming of `Grid2` in imports and ensures that all usages of the alias are updated to `Grid2`.
+<!-- @id mui-no-grid-alias -->
 
-## Rule Details
+Disallow renaming MUI Grid imports (`Grid2 as Grid`, `GridLegacy as Grid`).
 
-This rule checks for any renaming of `Grid2` in import statements and updates all usages of the alias to `Grid2`.
+|         |                                                           |
+| ------- | --------------------------------------------------------- |
+| Config  | `recommended` (warn), `strict`                            |
+| Autofix | Yes (renames the import and every reference, scope-aware) |
+| MUI     | all versions                                              |
 
-Examples of **incorrect** code for this rule:
+## Why
+
+An alias hides which Grid API a file uses. `GridLegacy as Grid` reads like the modern Grid but takes `item`/`xs`. The
+real name keeps the API visible to readers and to the other rules.
+
+## Incorrect
 
 ```jsx
-import { Avatar, Grid2 as Grid, TextField, Typography } from '@mui/material';
-
-export const MyComponent = () => {
-  return <Grid />;
-};
+import { GridLegacy as Grid } from '@mui/material';
+<Grid item xs={12} />;
 ```
 
-Examples of correct code for this rule:
+## Correct
 
 ```jsx
-import { Avatar, Grid2, TextField, Typography } from '@mui/material';
-
-export const MyComponent = () => {
-  return <Grid2 />;
-};
+import { GridLegacy } from '@mui/material';
+<GridLegacy item xs={12} />;
 ```
 
-Options This rule does not have any options.
+## Limits
 
-When Not To Use It If you want to allow renaming of Grid2 in imports, then it's safe to disable this rule.
-
-## More information
-
-https://mui.com/material-ui/migration/upgrade-to-grid-v2
+No fix when the real name is already bound in the module or would be captured in an inner scope, or when the alias is
+used as an object shorthand (`{ Grid }`).

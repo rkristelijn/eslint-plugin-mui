@@ -1,40 +1,35 @@
-# no-single-child-in-grid
+# no-single-child-in-stack
 
-Why this rule?
+<!-- @id mui-no-single-child-in-stack -->
 
-Using Stack for a single child element is unnecessary and can lead to:
+Disallow a Stack with a single child.
 
-- Unintended layout issues: Stack is designed for flex/grid-based layouts, which may introduce unwanted spacing,
-  alignment, or wrapping behavior when used with a single child.
-- Reduced clarity: It makes the code harder to understand since Stack implies a layout structure, but only one element
-  is inside.
-- Performance overhead: MUI’s Stack applies CSS grid styles that aren’t needed for a single child, adding unnecessary
-  computation.
+|         |                                |
+| ------- | ------------------------------ |
+| Config  | `recommended` (warn), `strict` |
+| Autofix | No                             |
+| MUI     | all versions                   |
 
-wrong:
+## Why
 
-```jsx
-import { Stack } from '@mui/material';
+`spacing`, `direction` and `divider` only matter between two or more children. A Stack with one child is noise; render
+the child directly or use `Box`. 2.0 no longer auto-replaces it with `Box`, because Stack-only props on a Box are
+invalid in v9.
 
-export const Component = () => {
-  return (
-    <Stack>
-      <Typography>foo</Typography>
-    </Stack>
-  );
-};
-```
-
-right:
+## Incorrect
 
 ```jsx
-import { Box } from '@mui/material';
-
-export const Component = () => {
-  return (
-    <Box>
-      <Typography>foo</Typography>
-    </Box>
-  );
-};
+<Stack spacing={2}>
+  <Typography>foo</Typography>
+</Stack>
 ```
+
+## Correct
+
+```jsx
+<Typography>foo</Typography>
+```
+
+## Limits
+
+Expression children (`{items.map(...)}`) are never reported.

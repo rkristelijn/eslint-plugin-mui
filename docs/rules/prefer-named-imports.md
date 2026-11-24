@@ -1,4 +1,12 @@
-# Enforce named imports for MUI icons (prefer-named-imports)
+# prefer-named-imports (deprecated)
+
+<!-- @id mui-prefer-named-imports -->
+
+> **Deprecated since 2.0.0.** MUI now recommends the opposite: named imports from `@mui/icons-material` are up to 6x
+> slower in development than default path imports
+> ([source](https://mui.com/material-ui/guides/minimizing-bundle-size/)). Use
+> [`prefer-path-imports`](./prefer-path-imports.md) instead. This rule is kept for backward compatibility, is in no
+> config, and will be removed in 3.0.0.
 
 This rule enforces the use of named imports for MUI icons instead of default imports.
 

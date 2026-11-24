@@ -1,4 +1,14 @@
-# require MUI `sx` keys to be sorted (sort-sx-keys)
+# sort-sx-keys
+
+<!-- @id mui-sort-sx-keys -->
+
+Require MUI `sx` keys to be sorted (CSS-group order by default).
+
+|         |              |
+| ------- | ------------ |
+| Config  | `strict`     |
+| Autofix | Yes          |
+| MUI     | all versions |
 
 Some developers prefer to sort CSS properties by group or alphabetically to more easily find and/or diff necessary
 properties at a later time. Others feel that it adds complexity and becomes burden to maintain.
@@ -50,7 +60,7 @@ const Header = (
 
 ```json
 {
-  "sort-keys": [
+  "mui/sort-sx-keys": [
     "error",
     "custom",
     [
