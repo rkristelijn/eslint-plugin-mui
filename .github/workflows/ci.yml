@@ -48,6 +48,8 @@ jobs:
       # checked. The grep fails the job if keur scanned nothing.
       - name: keur gate on the whole tree
         run: |
+          # Explicit, so a BLOCK fails the job through the tee pipe regardless of the runner's default shell flags.
+          set -euo pipefail
           git checkout --orphan keur-full-tree
           git add -A
           keur check --tier pre-push 2>&1 | tee keur.log

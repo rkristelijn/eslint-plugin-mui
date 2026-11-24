@@ -35,6 +35,8 @@ describe('quality gate', () => {
     assert.match(ci, /uses: rkristelijn\/keur@/);
     // the keur gate must see files: orphan staging + a non-empty assertion
     assert.match(ci, /git checkout --orphan/);
+    // a BLOCK must fail the job through the `| tee` pipe
+    assert.match(ci, /set -euo pipefail\n\s+git checkout --orphan/);
     assert.match(ci, /grep -qE 'scanning \[1-9\]/);
     assert.doesNotMatch(ci, /read-tree --empty/);
     for (const node of ['20.19', '22', '24']) assert.ok(ci.includes(`'${node}'`), node);
