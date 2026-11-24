@@ -33,6 +33,10 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       # keur check gates the staged set; stage the whole tree as new so the
       # gate sees every file (same verdict as a local commit of all files).
+      # keur v0.2.0 release binaries link RE2 dynamically; keur main ships static
+      # binaries (keur#37). Drop this step once a release with static RE2 is out.
+      - name: Install RE2 runtime for keur v0.2.0
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libre2-10
       - name: Stage the whole tree for keur
         run: git read-tree --empty && git add -A
       - uses: rkristelijn/keur@ade05b4d9537b538acefb966ba83b86a1f206891 # v0.2.0
