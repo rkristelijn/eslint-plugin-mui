@@ -34,10 +34,14 @@ import Close from '@mui/icons-material/Close';
 ## Options
 
 ```js
-'mui/no-deep-imports': ['error', { allow: ['@mui/x-charts/internals'] }] // prefixes that may be deep
+'mui/no-deep-imports': ['error', { allow: ['@mui/material/internal'] }] // prefixes that may be deep
 ```
 
 ## Limits
+
+Only the packages that use `exports` since v7 are checked: `@mui/material`, `@mui/system`, `@mui/lab`, `@mui/joy`,
+`@mui/icons-material`, `@mui/utils` and `@mui/styled-engine(-sc)`. MUI X versions separately, and v7 has no `exports`,
+so its deep paths are left alone.
 
 Deep **type** imports (`import type { TypographyOptions } from '@mui/material/styles/createTypography'`) are reported
 but not rewritten, because some interfaces were renamed (`TypographyOptions` → `TypographyVariantsOptions`).

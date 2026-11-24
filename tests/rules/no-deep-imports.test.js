@@ -14,9 +14,11 @@ createRuleTester().run('no-deep-imports', rule, {
     "import Button from '@mui/material/Button';",
     "import { Button } from '@mui/material';",
     "import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';",
+    // MUI X v7 has no `exports` field: deep paths still resolve (found in a real Nx monorepo)
+    "import { GridApiPro } from '@mui/x-data-grid-pro/models/gridApiPro';",
     "import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';",
     "import x from 'lodash/fp/map';",
-    { code: "import x from '@mui/x-charts/internals/foo';", options: [{ allow: ['@mui/x-charts/internals'] }] },
+    { code: "import x from '@mui/material/internal/foo';", options: [{ allow: ['@mui/material/internal'] }] },
   ],
   invalid: [
     {
