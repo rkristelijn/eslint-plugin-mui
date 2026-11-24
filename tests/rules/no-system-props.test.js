@@ -5,7 +5,7 @@
 
 'use strict';
 
-const { createRuleTester } = require('../helpers/rule-tester');
+const { createRuleTester, tsx } = require('../helpers/rule-tester');
 const rule = require('../../lib/rules/no-system-props');
 
 const IMPORT = "import { Box, Stack, Typography, Link, Grid, Button } from '@mui/material';\n";
@@ -30,6 +30,13 @@ createRuleTester().run('no-system-props', rule, {
     { code: `${IMPORT}<Box component="img" width={100} />;`, options: [{ ignore: ['width'] }] },
   ],
   invalid: [
+    {
+      name: 'a local TypeScript type named Box does not shadow the imported component',
+      code: `${IMPORT}function View() {\n  type Box = {};\n  return <Box mt={2} />;\n}`,
+      output: `${IMPORT}function View() {\n  type Box = {};\n  return <Box sx={{ mt: 2 }} />;\n}`,
+      languageOptions: tsx,
+      errors: [err('mt', 'Box')],
+    },
     {
       name: 'a spread may carry sx: report, no fix (an explicit sx would drop it)',
       code: `${IMPORT}<Box {...extra} mt={2} />;`,

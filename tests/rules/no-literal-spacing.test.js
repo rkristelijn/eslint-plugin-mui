@@ -22,6 +22,15 @@ createRuleTester().run('no-literal-spacing', rule, {
   ],
   invalid: [
     {
+      name: '|| and ?? entries: both operands can be the style',
+      code: "<Box sx={[(dense && { p: '8px' }) || { m: '16px' }, custom ?? { mt: '8px' }]} />;",
+      errors: [
+        err('8px', [units('1', "<Box sx={[(dense && { p: 1 }) || { m: '16px' }, custom ?? { mt: '8px' }]} />;")]),
+        err('16px', [units('2', "<Box sx={[(dense && { p: '8px' }) || { m: 2 }, custom ?? { mt: '8px' }]} />;")]),
+        err('8px', [units('1', "<Box sx={[(dense && { p: '8px' }) || { m: '16px' }, custom ?? { mt: 1 }]} />;")]),
+      ],
+    },
+    {
       code: "<Box sx={{ padding: '16px' }} />;",
       errors: [err('16px', [units('2', '<Box sx={{ padding: 2 }} />;')])],
     },

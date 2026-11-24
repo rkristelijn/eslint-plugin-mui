@@ -12,6 +12,9 @@ const BARREL = "import { Grid, Box, Typography } from '@mui/material';\n";
 
 createRuleTester().run('no-single-child-in-grid', rule, {
   valid: [
+    // a later spread can override container: not provably a container
+    `${BARREL}const A = () => <Grid container={true} {...{ container: false }}><Box /></Grid>;`,
+    `${BARREL}const A = (p) => <Grid container {...p}><Box /></Grid>;`,
     // container={false} / dynamic is not provably a container
     `${BARREL}const A = () => <Grid container={false} size={6}><Box /></Grid>;`,
     `${BARREL}const A = () => <Grid container={isWide}><Box /></Grid>;`,
@@ -30,6 +33,11 @@ createRuleTester().run('no-single-child-in-grid', rule, {
     `${BARREL}const A = () => <Grid container>{/* todo */}</Grid>;`,
   ],
   invalid: [
+    {
+      name: 'a spread before container does not override it',
+      code: `${BARREL}const A = (p) => <Grid {...p} container><Box /></Grid>;`,
+      errors: [{ messageId: 'singleChild' }],
+    },
     {
       name: 'container={true} is a container',
       code: `${BARREL}const A = () => <Grid container={true}><Box /></Grid>;`,

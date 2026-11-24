@@ -25,12 +25,29 @@ Targets MUI v7 to v9 and ESLint 9 / 10 (flat config).
 
 ### Upgrading from 1.x
 
-1. Upgrade to ESLint 9.15+ with a flat config (`eslint.config.js`).
-2. Replace the per-rule setup with `mui.configs.recommended` (or `strict`), or keep your rule list and remove
-   `mui/prefer-named-imports`.
-3. Run `npx eslint --fix .`. The migration guards autofix what is provably equivalent and report the rest with the
-   matching `@mui/codemod` command.
-4. Still on MUI v6? `no-removed-imports` reports `Grid2` (renamed in v7). Disable it until you upgrade MUI.
+1. **Still on MUI v6? Do this first.** The migration guards target v7+. On v6, `Grid2` is the modern grid and `Grid` is
+   the legacy one, so autofixing `no-removed-imports` and `no-legacy-grid` would change layouts. Turn both off until you
+   upgrade MUI:
+   ```js
+   { ...mui.configs.recommended, rules: { ...mui.configs.recommended.rules, 'mui/no-removed-imports': 'off', 'mui/no-legacy-grid': 'off' } }
+   ```
+2. Upgrade to ESLint 9.15+ with a flat config (`eslint.config.js`).
+3. Use `mui.configs.recommended` (or `strict`) **scoped to your component files**. ESLint only lints `*.js`, `*.mjs` and
+   `*.cjs` by default, and `.tsx` needs a TypeScript parser:
+   ```js
+   import tsParser from '@typescript-eslint/parser';
+   export default [
+     {
+       ...mui.configs.recommended,
+       files: ['**/*.{js,jsx,ts,tsx}'],
+       // keep the plugin's JSX parserOptions; the spread must come first
+       languageOptions: { ...mui.configs.recommended.languageOptions, parser: tsParser },
+     },
+   ];
+   ```
+   Or keep your 1.x rule list and remove `mui/prefer-named-imports`.
+4. Run `npx eslint --fix .` on a clean working tree and review the diff. The migration guards autofix what is provably
+   equivalent and report the rest with the matching `@mui/codemod` command.
 
 ### Added
 

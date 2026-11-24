@@ -27,12 +27,25 @@ export default [
 ];
 ```
 
-ESLint only lints `*.js`, `*.mjs` and `*.cjs` by default. For `.jsx` (or `.tsx` with a TypeScript parser), scope the
-config to your files:
+ESLint only lints `*.js`, `*.mjs` and `*.cjs` by default. Scope the config to your component files, and add a TypeScript
+parser for `.ts` / `.tsx`:
 
 ```js
-export default [{ files: ['**/*.{js,jsx,ts,tsx}'], ...mui.configs.recommended }];
+import tsParser from '@typescript-eslint/parser';
+import mui from '@rkristelijn/eslint-plugin-mui';
+
+export default [
+  {
+    ...mui.configs.recommended,
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    // keep the plugin's JSX parserOptions; the spread must come first
+    languageOptions: { ...mui.configs.recommended.languageOptions, parser: tsParser },
+  },
+];
 ```
+
+> **Still on MUI v6?** The migration guards target v7+. On v6 `Grid2` is the modern grid and `Grid` the legacy one, so
+> turn off `mui/no-removed-imports` and `mui/no-legacy-grid` until you upgrade, or `--fix` changes your layouts.
 
 Or configure individual rules:
 
